@@ -7,7 +7,8 @@ FROM golang:alpine as builder
 
 # Install Git for go get
 RUN set -eux;\
-  apk add --no-cache --virtual git
+  apk add --no-cache --virtual git &&\
+  apk add --no-cache --virtual curl
 
 # Set ENV
 ENV GOPATH /go/
@@ -20,7 +21,9 @@ WORKDIR $GO_WORKDIR
 ADD . $GO_WORKDIR
 
 # Fetch Golang Dependency and Build Binary
-RUN go get &&\
+RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh &&\
+  dep init &&\
+  dep ensure -add go.mongodb.org/mongo-driver/mongo &&\
   go install
 
 # -------------------- Ready --------------------
