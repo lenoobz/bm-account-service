@@ -1,5 +1,5 @@
 # Create by Le Trong on 17/Feb/2019
-port: 6767
+port: 80
 logger:
   level: "debug"
 mongo:

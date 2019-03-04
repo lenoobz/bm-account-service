@@ -41,5 +41,5 @@ WORKDIR /app
 COPY --from=builder /go/bin/accountservice /app
 COPY --from=builder /go/src/accountservice/config.yaml /app
 
-EXPOSE 6767
+EXPOSE 80
 ENTRYPOINT ./accountservice
