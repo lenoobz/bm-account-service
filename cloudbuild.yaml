@@ -4,31 +4,31 @@
 steps:
   - name: "gcr.io/cloud-builders/docker"
     id: "Build deployable image (commit tag)"
-    args: ["build", "-t", "gcr.io/$PROJECT_ID/masonjar-ux:$SHORT_SHA", "."]
+    args: ["build", "-t", "gcr.io/$PROJECT_ID/bm-account-service:$SHORT_SHA", "."]
 
   - name: "gcr.io/cloud-builders/docker"
     id: "Push deployable image (commit tag)"
-    args: ["push", "gcr.io/$PROJECT_ID/masonjar-ux:$SHORT_SHA"]
+    args: ["push", "gcr.io/$PROJECT_ID/bm-account-service:$SHORT_SHA"]
 
   - name: "gcr.io/cloud-builders/docker"
     id: "Build deployable image (latest tag)"
-    args: ["build", "-t", "gcr.io/$PROJECT_ID/masonjar-ux:latest", "."]
+    args: ["build", "-t", "gcr.io/$PROJECT_ID/bm-account-service:latest", "."]
 
   - name: "gcr.io/cloud-builders/docker"
     id: "Push deployable image (latest tag)"
-    args: ["push", "gcr.io/$PROJECT_ID/masonjar-ux:latest"]
+    args: ["push", "gcr.io/$PROJECT_ID/bm-account-service:latest"]
 
-  # - name: "gcr.io/cloud-builders/kubectl"
-  #   id: 'Apply Kubectl configuration'
-  #   args:
-  #     - "set"
-  #     - "image"
-  #     - "deployment/masonjar-ux-deployment"
-  #     - "masonjar-ux-container=gcr.io/$PROJECT_ID/masonjar-ux:latest"
-  #   env:
-  #     - "CLOUDSDK_COMPUTE_ZONE=northamerica-northeast1-a"
-  #     - "CLOUDSDK_CONTAINER_CLUSTER=masonjar-ux-cluster"
+  - name: "gcr.io/cloud-builders/kubectl"
+    id: 'Apply Kubectl configuration'
+    args:
+      - "set"
+      - "image"
+      - "deployment/masonjar-backend-deployment"
+      - "masonjar-backend-container=gcr.io/$PROJECT_ID/bm-account-service:latest"
+    env:
+      - "CLOUDSDK_COMPUTE_ZONE=northamerica-northeast1-a"
+      - "CLOUDSDK_CONTAINER_CLUSTER=masonjar-service-cluster"
 
 images:
-  - "gcr.io/$PROJECT_ID/masonjar-ux:$SHORT_SHA"
-  - "gcr.io/$PROJECT_ID/masonjar-ux:latest"
+  - "gcr.io/$PROJECT_ID/bm-account-service:$SHORT_SHA"
+  - "gcr.io/$PROJECT_ID/bm-account-service:latest"
