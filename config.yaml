@@ -1,0 +1,11 @@
+# Create by Le Trong on 17/Feb/2019
+port: 6767
+logger:
+  level: "debug"
+mongo:
+  host: "ds119930.mlab.com"
+  port: 19930
+  username: "root"
+  password: "4mErAmlAb!"
+  dbname: "masonjar"
+  collection: "user"
