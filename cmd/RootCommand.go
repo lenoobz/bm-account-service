@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/letrong/bm-account-service/conf"
+	"github.com/letrong/bm-account-service/service"
 	"github.com/letrong/bm-account-service/utils"
 	"github.com/spf13/cobra"
 )
@@ -39,4 +40,5 @@ func run(cmd *cobra.Command, args []string) {
 	}
 
 	logger.Infof("STARTING... \n%s", prettyConfig)
+	service.StartWebServer(config, logger)
 }

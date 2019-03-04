@@ -36,6 +36,7 @@ WORKDIR /app
 
 # Copy binary from builder stage into image
 COPY --from=builder /go/bin/accountservice /app
+COPY --from=builder /go/src/accountservice/config.yaml /app
 
 EXPOSE 6767
 ENTRYPOINT ./accountservice
