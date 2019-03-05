@@ -23,22 +23,22 @@ func setSharedVariables(conf *conf.Config, log *logrus.Entry, mongo *mongo.Datab
 
 // StartWebServer the entrypoint of web server
 func StartWebServer(conf *conf.Config, log *logrus.Entry) {
-	logger.Infoln("MongoDB connecting ...")
+	log.Infoln("MongoDB connecting ...")
 	mongo, err := db.ConnectMongoDB(conf, log)
 	if err != nil {
-		logger.Fatalln("Error occured while connecting to mongodb")
+		log.Fatalln("Error occured while connecting to mongodb")
 	}
 	setSharedVariables(conf, log, mongo)
 
 	r := NewRouter()
 	http.Handle("/", r)
 
-	port := fmt.Sprintf(":%d", config.Port)
-	logger.Infof("Start web server on port %s. Running ...", port)
+	port := fmt.Sprintf(":%d", conf.Port)
+	log.Infof("Start web server on port %s. Running ...", port)
 	err = http.ListenAndServe(port, nil)
 
 	if err != nil {
-		logger.Fatalf("Error occured while listening to port %d", config.Port)
-		logger.WithError(err)
+		log.Fatalf("Error occured while listening to port %d", conf.Port)
+		log.WithError(err)
 	}
 }
