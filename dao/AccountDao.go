@@ -3,16 +3,18 @@ package dao
 
 import (
 	"context"
-	"log"
 
+	"github.com/Sirupsen/logrus"
 	"github.com/letrong/bm-account-service/model"
 	"github.com/mongodb/mongo-go-driver/mongo"
 )
 
-// InsertOneValue inserts one item from Account model
-func InsertOneValue(db *mongo.Database, account model.Account) {
-	_, err := db.Collection("user").InsertOne(context.Background(), account)
+const accountCollection = "user"
+
+// InsertNewAccount inserts new account
+func InsertNewAccount(mongoDb *mongo.Database, logger *logrus.Entry, account model.Account) {
+	_, err := mongoDb.Collection(accountCollection).InsertOne(context.Background(), account)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatalln(err)
 	}
 }

@@ -22,13 +22,15 @@ ADD . $GO_WORKDIR
 
 # Fetch Golang Dependency and Build Binary
 RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh &&\
-  dep init &&\
   dep ensure -add go.mongodb.org/mongo-driver/mongo &&\
   go install
 
 # -------------------- Ready --------------------
 # Start from a raw Alpine Linux image
 FROM alpine:latest
+
+# Set ENV
+ENV PORT 80
 
 # Install ca-certificates for ssl
 RUN set -eux; \
@@ -41,5 +43,5 @@ WORKDIR /app
 COPY --from=builder /go/bin/accountservice /app
 COPY --from=builder /go/src/accountservice/config.yaml /app
 
-EXPOSE 80
+EXPOSE $PORT
 ENTRYPOINT ./accountservice

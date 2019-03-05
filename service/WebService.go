@@ -15,29 +15,30 @@ var config *conf.Config
 var logger *logrus.Entry
 var mongoDb *mongo.Database
 
-// StartWebServer the entrypoint of web server
-func StartWebServer(conf *conf.Config, log *logrus.Entry) {
+func setSharedVariables(conf *conf.Config, log *logrus.Entry, mongo *mongo.Database) {
 	config = conf
 	logger = log
+	mongoDb = mongo
+}
 
-	var err error
-	mongoDb, err = db.ConnectMongoDB(config, logger)
+// StartWebServer the entrypoint of web server
+func StartWebServer(conf *conf.Config, log *logrus.Entry) {
+	logger.Infoln("MongoDB connecting ...")
+	mongo, err := db.ConnectMongoDB(conf, log)
 	if err != nil {
-		logger.Fatalln("Cannot connect to mongo")
-	} else {
-		logger.Infoln("MongoDB connected")
+		logger.Fatalln("Error occured while connecting to mongodb")
+	}
+	setSharedVariables(conf, log, mongo)
 
-		r := NewRouter()
-		http.Handle("/", r)
+	r := NewRouter()
+	http.Handle("/", r)
 
-		port := fmt.Sprintf(":%d", config.Port)
-		logger.Infof("Web server running ...")
-		logger.Infof("Listen to port%s", port)
-		err = http.ListenAndServe(port, nil)
+	port := fmt.Sprintf(":%d", config.Port)
+	logger.Infof("Start web server on port %s. Running ...", port)
+	err = http.ListenAndServe(port, nil)
 
-		if err != nil {
-			logger.Errorf("An error occured starting HTTP listener at port %d", config.Port)
-			logger.Errorf("Error: " + err.Error())
-		}
+	if err != nil {
+		logger.Fatalf("Error occured while listening to port %d", config.Port)
+		logger.WithError(err)
 	}
 }
