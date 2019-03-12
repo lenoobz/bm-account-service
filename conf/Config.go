@@ -17,6 +17,7 @@ const defaultConfigHome = "$HOME/.config"
 type Config struct {
 	Port   int64
 	Config string
+	DbType string
 	Logger LogConfig
 	Mongo  MongoConfig
 }

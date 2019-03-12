@@ -17,11 +17,7 @@ type LogConfig struct {
 
 // ConfigureLogging will take the logging configuration and also adds
 // a few default parameters
-func ConfigureLogging(config *LogConfig) (*logrus.Entry, error) {
-	hostname, err := os.Hostname()
-	if err != nil {
-		return nil, err
-	}
+func ConfigureLogging(config *LogConfig) (*logrus.Logger, error) {
 
 	// Use a file config
 	if config.File != "" {
@@ -44,5 +40,5 @@ func ConfigureLogging(config *LogConfig) (*logrus.Entry, error) {
 		DisableTimestamp: false,
 	})
 
-	return logrus.StandardLogger().WithField("hostname", hostname), nil
+	return logrus.StandardLogger(), nil
 }
