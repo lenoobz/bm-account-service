@@ -2,6 +2,7 @@
 port: 80
 logger:
   level: "debug"
+dbtype: "mongo"
 mongo:
   host: "ds119930.mlab.com"
   port: 19930
