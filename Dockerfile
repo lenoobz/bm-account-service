@@ -7,7 +7,8 @@ FROM golang:alpine as builder
 
 # Install Git for go get
 RUN set -eux;\
-  apk add --no-cache --virtual git
+  apk add --no-cache --virtual git &&\
+  apk add --no-cache --virtual curl
 
 # Set ENV
 ENV GOPATH /go/
@@ -20,12 +21,16 @@ WORKDIR $GO_WORKDIR
 ADD . $GO_WORKDIR
 
 # Fetch Golang Dependency and Build Binary
-RUN go get &&\
+RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh &&\
+  dep ensure -add go.mongodb.org/mongo-driver/mongo &&\
   go install
 
 # -------------------- Ready --------------------
 # Start from a raw Alpine Linux image
 FROM alpine:latest
+
+# Set ENV
+ENV PORT 80
 
 # Install ca-certificates for ssl
 RUN set -eux; \
@@ -38,5 +43,5 @@ WORKDIR /app
 COPY --from=builder /go/bin/accountservice /app
 COPY --from=builder /go/src/accountservice/config.yaml /app
 
-EXPOSE 6767
+EXPOSE $PORT
 ENTRYPOINT ./accountservice
