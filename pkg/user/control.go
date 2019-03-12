@@ -26,6 +26,13 @@ func (uc *Control) CreateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, u)
 }
 
+// GetUsers implements GetUsers contract of User Controller interface
+func (uc *Control) GetUsers(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "pong pong",
+	})
+}
+
 // GetToken implements GetToken contract of User Controller interface
 func (uc *Control) GetToken(c *gin.Context) {
 	c.JSON(200, gin.H{

@@ -32,6 +32,8 @@ func InitUserRouter(uc *Control) *gin.Engine {
 			switch route.Method {
 			case "POST":
 				groupRoute.POST(route.Pattern, route.HandlerFunc)
+			case "GET":
+				groupRoute.GET(route.Pattern, route.HandlerFunc)
 			}
 
 		}
@@ -49,6 +51,11 @@ func generateRoutes(uc *Control) []AppRoute {
 					"POST",
 					"/users",
 					uc.CreateUser,
+				},
+				Route{
+					"GET",
+					"/users",
+					uc.GetUsers,
 				},
 			},
 		},

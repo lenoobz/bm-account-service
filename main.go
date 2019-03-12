@@ -4,6 +4,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 
 	"github.com/letrong/bm-account-service/conf"
@@ -92,5 +93,6 @@ func run(cmd *cobra.Command, args []string) {
 
 	// Init User Router
 	engine := user.InitUserRouter(userControl)
-	engine.Run()
+	port := fmt.Sprintf(":%d", config.Port)
+	engine.Run(port)
 }

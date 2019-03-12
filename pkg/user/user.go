@@ -1,7 +1,7 @@
 // Package user provides abstraction layer to User core business logic
 package user
 
-import "net/http"
+import "github.com/gin-gonic/gin"
 
 // Repoer interface provide the abstraction layers wrap around user domain
 type Repoer interface {
@@ -17,7 +17,8 @@ type Servicer interface {
 
 // Controller interface provide the abstraction layers wrap around user service
 type Controller interface {
-	CreateUser(w http.ResponseWriter, r *http.Request)
-	GetToken(w http.ResponseWriter, r *http.Request)
+	CreateUser(c *gin.Context)
+	GetUsers(c *gin.Context)
+	GetToken(c *gin.Context)
 	//TODO Refresh Token
 }
